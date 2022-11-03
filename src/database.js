@@ -1,7 +1,12 @@
 const mongoose =require ("mongoose")
-const URI='mongodb://localhost/videogamesAldo'
-mongoose.connect(URI)
-.then(db=> console.log("db is conected"))
-.catch(err => console.log(err));
+
+const contactadb= process.env.MONGO_DB
+//modulo conect contecta con la instancia
+mongoose.connect(contactadb)
+
+const connect = mongoose.connection
+
+connect.once("open", ()=>{ console.log("db is conected")})
+
 
 module.exports = mongoose
