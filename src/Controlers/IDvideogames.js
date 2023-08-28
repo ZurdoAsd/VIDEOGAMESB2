@@ -1,13 +1,16 @@
 const { API, API_KEY } = process.env;
 const axios = require("axios");
-const { Videogame } = require("../database");
-const videogames = require("../models/videogames");
+const  videogames = require("../models/videogames");
 
 const getVideogamesID = async (id) => {
   try {
+    if(id.length>8 ){
+      const vGame = await videogames.findById(id)
+     return vGame
+   }else{
     const gameById = await axios(`${API}/${id}${API_KEY}`);
     const aux = gameById.data;
-    let IdObj = {
+      return IdObj = {
       name: aux.name,
       rating: aux.rating,
       released: aux.released,
@@ -17,7 +20,7 @@ const getVideogamesID = async (id) => {
       background_image: aux.background_image_additional,
       description: aux.description_raw,
     };
-    return IdObj;
+  }
   } catch (error) {
     console.log(error);
   }
@@ -25,7 +28,7 @@ const getVideogamesID = async (id) => {
 
 const editVideogamesID = async (id) => {
   try {
-    // const gameupid = await Videogame.findOne({ where: { id: id } });
+    // const gameupid = await videogames.findOne({ where: { id: id } });
   
     return ("actualziado");
   } catch (error) {
@@ -35,7 +38,7 @@ const editVideogamesID = async (id) => {
 
 const deleteVideogamesID = async (id) => {
   try {
-    const videogamedelete = await Videogame.findByPk(id);
+    const videogamedelete = await videogames.findByPk(id);
     if (videogamedelete) {
       await videogamedelete.destroy();
       return "video juego elimindado";

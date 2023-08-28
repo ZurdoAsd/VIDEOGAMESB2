@@ -6,26 +6,25 @@ const path = require('path');
 // Db connection
 const { mongoose } = require('./database');
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin',"*"); 
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+  });
 // settings configuracion
-// process.env.PORT que tome el puerto q me da el servicio de la nube .. sino el 3001
-// "port" define el valor del puerto
 app.set('port', process.env.PORT || 3001);
 
 // middlewares
-// mensaje con formato de texto 
 app.use(morgan('dev'));
-
-//metodo json -- cada q lleg aun dato al server .. va a ocmprobar si es formto json 
 app.use(express.json()) 
 
 //Routes
 app.use(require("./routes/index.js"));
 
-//static files -- donde van los archivos staticos -- public --
-// app.use("/prueba2",express.static(path.join(__dirname, "public")))
-
-
 //start server
 app.listen(app.get('port'), () =>{ 
     console.log(`listening on port ${app.get('port')}`);
 });
+

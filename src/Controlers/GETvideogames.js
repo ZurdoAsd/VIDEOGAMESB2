@@ -6,7 +6,7 @@ const get1 = async () => {
   const games = [];
   let url = `${API}${API_KEY}`;
 
-  for (let i = 1; i < 8; i++) {
+  for (let i = 1; i < 3; i++) {
     let pages = await axios.get(url);
     pages.data?.results.forEach((e) => {
       games.push({
@@ -27,7 +27,6 @@ const get1 = async () => {
 const infodb = async () => {
   const getDb = await videogames.find({});
   let aux = [];
-
   getDb?.forEach((e) => {
     aux.push({
       id: e._id,
