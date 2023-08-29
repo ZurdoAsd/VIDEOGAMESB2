@@ -19,7 +19,8 @@ mongoose.connect(
 const connect = mongoose.connection
 
 connect
-.once("open", ()=>{ console.log("db is conected")})
+//.once("open", ()=>{ console.log("db is conected")})
+.then(()=>{ console.log("db is conected")})
 .catch((error) => console.error(error));
 
 
