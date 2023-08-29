@@ -12,16 +12,17 @@ const {
 //const contactadb= process.env.MONGO_DB
 //modulo conect contecta con la instancia
 //mongoose.connect(contactadb)
-mongoose.connect(
-`mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_CLUSTER}:${MONGODB_PORT}/${MONGODB_DATABASE}?authSource=admin`,
+mongoose
+.connect(`mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_CLUSTER}:${MONGODB_PORT}/${MONGODB_DATABASE}?authSource=admin`,
 )
-
-const connect = mongoose.connection
-
-connect
-//.once("open", ()=>{ console.log("db is conected")})
 .then(()=>{ console.log("db is conected")})
 .catch((error) => console.error(error));
+//const connect = mongoose.connection
+
+//connect
+//.once("open", ()=>{ console.log("db is conected")})
+//.then(()=>{ console.log("db is conected")})
+//.catch((error) => console.error(error));
 
 
 
