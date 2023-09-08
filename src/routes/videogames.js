@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const videogames = require("../models/videogames");
 
-const { getQuery, getAllGames } = require("../Controlers/GETvideogames");
+const { getForQuery, getAllGames } = require("../Controlers/GETvideogames");
 const {
   getVideogamesID,
   // editVideogamesID,
@@ -14,23 +14,29 @@ const {
 router.get("/", async (req, res) => {
   try {
     const { name } = req.query;
+    const AllVideogames = await getAllGames();
+    
     if (name) {
-      const getquery = await getQuery(name);
-      res.json(getquery);
+      const getquery = getForQuery(name,AllVideogames);
+      getquery.length
+      ?res.status(200).json(getquery)
+      :res.status(404).json("no existe el juego");
     } else {
-      const getTodo = await getAllGames();
-      res.send(getTodo);
+      const AllVideogamesSorted= AllVideogames.sort((a, b) => { return (a.name.toLowerCase() > b.name.toLowerCase())?1:-1});
+      res.status(200).send(AllVideogamesSorted);
     }
-  } catch (error) {
+  }catch (error) {
     console.log(error);
   }
 });
 // GET id
 router.get("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
+    
     const getforid = await getVideogamesID(id);
-    res.json(getforid);
+    getforid?res.json(getforid)
+    :res.status(404).json("no existe el juego");
   } catch (error) {
     console.log(error);
   }

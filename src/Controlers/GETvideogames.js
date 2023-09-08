@@ -1,8 +1,8 @@
-const  videogames = require("../models/videogames");
+const videogames = require("../models/videogames");
 const { API, API_KEY } = process.env;
 const axios = require("axios");
 
-const get1 = async () => {
+const infoapi = async () => {
   const games = [];
   let url = `${API}${API_KEY}`;
 
@@ -12,18 +12,19 @@ const get1 = async () => {
       games.push({
         id: e.id,
         name: e.name,
-        image: e.background_image,
-        background_image: null,
-        database_origin: false,
-        genres: e.genres.map((e) => e.name),
         rating: e.rating,
-        plataforms: e.platforms.map(e => e.platform.name),
+        genres: e.genres.map((e) => e.name),
+        platforms: e.platforms.map((e) => e.platform.name),
+        image: e.background_image,
+        background_image: e.short_screenshots[1].image,
+        database_origin: false,
       });
     });
     url = pages.data.next;
   }
   return games;
 };
+
 const infodb = async () => {
   const getDb = await videogames.find({});
   let aux = [];
@@ -31,45 +32,29 @@ const infodb = async () => {
     aux.push({
       id: e._id,
       name: e.name,
-      description: e.description,
-      image: e.image,
-      released: e.released,
-      background_image: e.background_image,
-      genres: e.genres.map((e) => e),
       rating: e.rating,
-      plataforms: e.platforms.map((e) => e),
+      genres: e.genres.map((e) => e),
+      platforms: e.platforms.map((e) => e),
+      image: e.image,
+      background_image: e.background_image,
       database_origin: e.database_origin,
     });
-  });
+  }
+  
+  );
   return aux;
 };
 const getAllGames = async () => {
-  let allinfo = Promise.all([get1(), infodb()]).then((resultado) => {
+  let games = Promise.all([infoapi(), infodb()]).then((resultado) => {
     return [...resultado[0], ...resultado[1]];
   });
-  return allinfo;
+  return games;
 };
 
-const getQuery = async (name) => {
-  const games = await getAllGames();
-  const gamesFilt = games.filter(
-    (e) => e.name.toString().toLowerCase() === name.toLowerCase()
-  );
-
-  if(gamesFilt.length===0){
-  return ("no se encontraron resultados")
-  }
+const getForQuery = (name, AllVideogames) => {
+  const gamesFilt = AllVideogames.filter((e) =>
+    e.name.toString().toLowerCase().includes(name.toString().toLowerCase()));
   return gamesFilt;
 };
-const getListQuery= async (name) => {
-  const games = await getAllGames();
-  const gamesFilt = games.filter(
-    (e) => e.name.toString().toLowerCase().includes(name.toLowerCase())
-  );
 
-  if(gamesFilt.length===0){
-  return ("no se encontraron resultados")
-  }
-  return gamesFilt;
-};
-module.exports = { getQuery, getAllGames,getListQuery };
+module.exports = { getForQuery, getAllGames };

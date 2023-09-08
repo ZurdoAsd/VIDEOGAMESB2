@@ -4,9 +4,14 @@ const genres= require("../models/genres");
 const { getGenres } = require("../Controlers/GETgenres");
 
 router.get("/", async (req, res) => {
+  const dbgenres = await genres.find({});
     try {
-      const getallgenres = await getGenres();
-      res.json(getallgenres);
+    if (dbgenres.length===0) {
+     await getGenres()
+     const getapigenres = await genres.find({});
+      res.json(getapigenres) }
+      else{res.json(dbgenres)}
+      
     } catch (error) {
       console.log(error);
     }

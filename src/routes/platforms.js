@@ -4,9 +4,16 @@ const platforms = require("../models/platforms");
 const { getPlatforms } = require("../Controlers/GETplatforms.js");
 
 router.get("/", async (req, res) => {
+  const platformdb = await platforms.find({});
   try {
-    const getallplatforms = await getPlatforms();
-    res.json(getallplatforms);
+  
+    if (platformdb===0) {
+      await getPlatforms()
+      const platformapi = await platforms.find({});
+      res.json(platformapi);
+    } else {
+      res.json(platformdb);
+    }
   } catch (error) {
     console.log(error);
   }

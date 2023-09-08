@@ -4,32 +4,45 @@ const  videogames = require("../models/videogames");
 
 const getVideogamesID = async (id) => {
   try {
-    if(id.length>8 ){
-      const vGame = await videogames.findById(id)
-     return vGame
-   }else{
+    if(id.length<8){
     const gameById = await axios(`${API}/${id}${API_KEY}`);
-    const aux = gameById.data;
+    const aux = gameById.data.id;
+    const aux2 = gameById.data;
+    if(aux.toString() === id.toString()){
       return IdObj = {
-      name: aux.name,
-      rating: aux.rating,
-      released: aux.released,
-      genres: aux.genres.map((g) => g.name),
-      platforms: aux.parent_platforms.map((p) => p.platform.name),
-      image: aux.background_image,
-      background_image: aux.background_image_additional,
-      description: aux.description_raw,
-    };
-  }
-  } catch (error) {
-    console.log(error);
-  }
+      id: aux2.id,
+      name: aux2.name,
+      image: aux2.background_image,
+      background_image: aux2.background_image_additional,
+      genres: aux2.genres.map((g) => g.name),
+      rating: aux2.rating,
+      platforms: aux2.parent_platforms.map((p) => p.platform.name),
+      released: aux2.released,
+      description: aux2.description_raw}
+     }
+  
+   }else{
+
+ const gamedb2= await videogames.findById(id);
+
+ return gamedb = {
+  id: gamedb2._id,
+  name: gamedb2.name,
+  image: gamedb2.background_image,
+  background_image: gamedb2.background_image,
+  genres: gamedb2.genres,
+  rating: gamedb2.rating,
+  platforms: gamedb2.platforms,
+  released: gamedb2.released,
+  description: gamedb2.description, }
+}
+  } catch (error) { console.log(error); }
 };
 
 const editVideogamesID = async (id) => {
   try {
     // const gameupid = await videogames.findOne({ where: { id: id } });
-  
+
     return ("actualziado");
   } catch (error) {
     console.log(error);
