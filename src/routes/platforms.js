@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
   const platformdb = await platforms.find({});
   try {
   
-    if (platformdb===0) {
+    if (platformdb.length===0) {
       await getPlatforms()
       const platformapi = await platforms.find({});
       res.json(platformapi);
