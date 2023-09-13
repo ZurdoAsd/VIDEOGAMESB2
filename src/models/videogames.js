@@ -23,15 +23,15 @@ const videogames = new Schema({
   },
   rating: {
     type: String,
-    required: true,
+   // required: true,
   },
   background_image: {
     type: String,
-    required: true,
+  required: true,
   },
   image: {
     type: String,
-    required: true,
+   required: true,
   },
   platforms: {
     type: Array,

@@ -1,22 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const platforms = require("../models/platforms");
-const { getPlatforms } = require("../Controlers/GETplatforms.js");
+const loadPlatforms = require("../Controlers/PlatformControler");
 
-router.get("/", async (req, res) => {
-  const platformdb = await platforms.find({});
-  try {
-  
-    if (platformdb.length===0) {
-      await getPlatforms()
-      const platformapi = await platforms.find({});
-      res.json(platformapi);
-    } else {
-      res.json(platformdb);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
+router.get("/", loadPlatforms);
 
 module.exports = router;
