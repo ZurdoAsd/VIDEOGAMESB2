@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const app = express();
 const path = require('path');
 // Db connection
-const { mongoose } = require('./database2');
+const { mongoose } = require('./database');
 
 // cors
 app.use((req, res, next) => {
